@@ -1,10 +1,10 @@
 const mainSection = document.querySelector('main');
 const form = document.querySelector('#form');
-let books = {};
+let storedBooks = {};
 
 const bookTemplate = (newBook) => {
-  const div = document.createElement('div');
-  div.setAttribute('name', new Date().getTime())
+  let div = document.createElement('div');
+  div.setAttribute('name', newBook.time)
   const book = document.createElement('span');
   book.innerHTML = newBook.title;
   const author = document.createElement('span');
@@ -12,7 +12,8 @@ const bookTemplate = (newBook) => {
   const removeBtn = document.createElement('button');
   removeBtn.innerHTML = 'Remove';
   removeBtn.addEventListener('click', () => {
-    mainSection.removeChild(mainSection.querySelector('div[name="' + div.getAttribute('name') + '"]'));
+    mainSection.removeChild(div);
+    removeBook(div);
   });
   const hr = document.createElement('hr');
   const br1 = document.createElement('br');
@@ -30,6 +31,32 @@ const bookTemplate = (newBook) => {
   return div;
 }
 
+function getBooks() {
+  if (localStorage.getItem('stored-books') === null) {
+    localStorage.setItem('stored-books', JSON.stringify(storedBooks));
+  } else {
+    storedBooks = JSON.parse(localStorage.getItem('stored-books'));
+    for (book in storedBooks) {
+      mainSection.appendChild(bookTemplate(storedBooks[book]));
+    }
+  }
+}
+
+function retrieveBooks() {
+  storedBooks = JSON.parse(localStorage.getItem('stored-books'));
+}
+
+function updateBooks(bookHTML, book) {
+  storedBooks[bookHTML.getAttribute('name')] = book;
+  localStorage.setItem('stored-books', JSON.stringify(storedBooks));
+}
+
+function removeBook(book) {
+  delete storedBooks[book.getAttribute('name')];
+  console.log(book.getAttribute('name'));
+  localStorage.setItem('stored-books', JSON.stringify(storedBooks));
+}
+
 form.addEventListener('submit', (event) => {
   event.preventDefault();
 
@@ -37,12 +64,14 @@ form.addEventListener('submit', (event) => {
   let author = document.querySelector('#author');
 
   if (title.value != '' || author.value != '') {
-    let newBook = bookTemplate({
+    let addBook = {
       title: title.value,
-      author: author.value
-    });
-    books[newBook.getAttribute('name')] = newBook;
+      author: author.value,
+      time: new Date().getTime(),
+    };
+    let newBook = bookTemplate(addBook);
     mainSection.appendChild(newBook);
+    updateBooks(newBook, addBook);
 
     title.value = '';
     author.value = '';
@@ -55,3 +84,5 @@ form.addEventListener('submit', (event) => {
     return;
   } 
 });
+
+window.addEventListener('load', getBooks);
