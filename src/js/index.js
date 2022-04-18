@@ -1,13 +1,16 @@
 const mainSection = document.querySelector('main');
+const submit = document.querySelector('#submit-btn');
+let books = {};
 
 const bookTemplate = (newBook) => {
   const div = document.createElement('div');
+  div.setAttribute('name', new Date().getTime())
   const book = document.createElement('span');
-  book.innerHTML = newBook.name;
+  book.innerHTML = newBook.title;
   const author = document.createElement('span');
   author.innerHTML = newBook.author;
   const removeBtn = document.createElement('button');
-  removeBtn.innerHTML = 'Remove'
+  removeBtn.innerHTML = 'Remove';
   const hr = document.createElement('hr');
   const br1 = document.createElement('br');
   const br2 = document.createElement('br');
@@ -24,6 +27,13 @@ const bookTemplate = (newBook) => {
   return div;
 }
 
-let mybook = bookTemplate({name:'lorem ipsum 3', author:'someone'})
-
-mainSection.appendChild(mybook)
+submit.addEventListener('click', (event) => {
+  event.preventDefault();
+  let newBook = bookTemplate({
+    title: document.querySelector('#title').value,
+     author: document.querySelector('#author').value
+  });
+  books[newBook.getAttribute('name')] = newBook;
+  mainSection.appendChild(newBook);
+  console.log(books);
+});
