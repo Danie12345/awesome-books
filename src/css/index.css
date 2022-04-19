@@ -65,3 +65,15 @@ button {
   align-self: flex-end;
   margin: 0%;
 }
+
+main {
+width: 40%;
+top: 50%;
+left: 50%;
+}
+
+main > div {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
