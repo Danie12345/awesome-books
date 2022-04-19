@@ -1,18 +1,11 @@
+import { Bookshelf } from "./bookshelf.js";
+import { Book } from "./book.js";
+
 const mainSection = document.querySelector('main');
 const form = document.querySelector('#form');
 const title = document.querySelector('#title');
 const author = document.querySelector('#author');
-let storedBooks = {};
-
-function updateBooks(book) {
-  storedBooks[book.time] = book;
-  localStorage.setItem('stored-books', JSON.stringify(storedBooks));
-}
-
-function removeBook(book) {
-  delete storedBooks[book.time];
-  localStorage.setItem('stored-books', JSON.stringify(storedBooks));
-}
+let shelf = new Bookshelf();
 
 const bookTemplate = (newBook) => {
   const div = document.createElement('div');
@@ -25,7 +18,7 @@ const bookTemplate = (newBook) => {
   removeBtn.innerHTML = 'Remove';
   removeBtn.addEventListener('click', () => {
     mainSection.removeChild(div);
-    removeBook(newBook);
+    shelf.delBook(newBook);
   });
   const br1 = document.createElement('br');
   const br2 = document.createElement('br');
@@ -44,14 +37,10 @@ const bookTemplate = (newBook) => {
 };
 
 function getBooks() {
-  if (localStorage.getItem('stored-books') === null) {
-    localStorage.setItem('stored-books', JSON.stringify(storedBooks));
-  } else {
-    storedBooks = JSON.parse(localStorage.getItem('stored-books'));
-    Object.values(storedBooks).forEach((book) => {
-      mainSection.appendChild(bookTemplate(book));
-    });
-  }
+  shelf.retrieveStorage();
+  Object.values(shelf.books).forEach((book) => {
+    mainSection.appendChild(bookTemplate(book));
+  });
 }
 
 form.addEventListener('submit', (event) => {
@@ -65,7 +54,7 @@ form.addEventListener('submit', (event) => {
     };
     const newBook = bookTemplate(addBook);
     mainSection.appendChild(newBook);
-    updateBooks(addBook);
+    shelf.addBook(addBook);
     title.value = '';
     author.value = '';
   } else if (title.value === '') {
