@@ -2,22 +2,19 @@
 
 # Awesome Books
 
-
 This project is a basic booklist project.
-
 
 ## Built With
 
 - HTML
-- JAVASCRIPT
+- JavaScript
+- CSS
 
 ## Live Demo (if available)
 
-[Live Demo Link](https://livedemo.com)
-
+[Live Demo Link](https://danie12345.github.io/awesome-books/)
 
 ## Getting Started
-
 
 > To get a local copy up and running follow these simple example steps.
 
@@ -31,10 +28,6 @@ This project is a basic booklist project.
 
 - Create a branch to work on
 
-
-
-
-
 ## Authors
 
 👤 Daniel Malo
@@ -45,6 +38,9 @@ This project is a basic booklist project.
 
 - GitHub: [@adanzeakonobi](https://github.com/adanzeakonobi)
 
+👤 Sebastian Solis
+
+- GitHub: [@sebastianDanielSolisFenger](https://github.com/SebastianSolisFenger)
 
 ## 🤝 Contributing
 
